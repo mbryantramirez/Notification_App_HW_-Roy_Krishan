@@ -36,17 +36,18 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
         Picasso.get()
                 .load(hits.getLargeImageURL())
                 .into(mainImageView);
+        intent = new Intent(itemView.getContext(), SecondActivity.class);
+        sharedPreferences.edit()
+                .putString(SHARED_PREF_IMAGE_KEY,hits.getLargeImageURL())
+                .putString(SHARED_PREF_USER_NAME_KEY,hits.getUser())
+                .apply();
+        itemView.getContext().startActivity(intent);
         //TODO: if (sharedPreferences != null then create a new retrofit call inside onBind.
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent = new Intent(itemView.getContext(), SecondActivity.class);
-                Bundle bundle = new Bundle();
-                sharedPreferences.edit()
-                        .putString(SHARED_PREF_IMAGE_KEY,hits.getLargeImageURL())
-                        .putString(SHARED_PREF_USER_NAME_KEY,hits.getUser())
-                        .apply();
-                itemView.getContext().startActivity(intent);
+
+
             }
         });
 
