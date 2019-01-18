@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Pixabey> call, Response<Pixabey> response) {
                 //Command+option+V
-                hits = response.body().getHits();
 
+                hits = response.body().getHits();
                 Log.d(TAG, "onResponse: " + hits);
                 ImageViewAdapter imageViewAdapter = new ImageViewAdapter(hits);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);

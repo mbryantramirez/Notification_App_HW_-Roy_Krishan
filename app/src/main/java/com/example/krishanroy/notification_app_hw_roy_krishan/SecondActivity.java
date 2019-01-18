@@ -13,8 +13,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.krishanroy.notification_app_hw_roy_krishan.view.ImageViewHolder;
 import com.squareup.picasso.Picasso;
 
 public class SecondActivity extends AppCompatActivity {
@@ -24,18 +27,24 @@ public class SecondActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     public static final String CHANNEL_1_ID = "channel1";
     private NotificationManager notifyManager;
-    private static final int NOTIFICATION_ID = 0;
+    private static final int[] NOTIFICATION_ID = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
-        //String getImageFromMainActivity = sharedPreferences.getString(MainActivity.SHARED_PREF_IMAGE_KEY, "null");
+        Intent intent = getIntent();
+        sharedPreferences = getSharedPreferences(ImageViewHolder.SHARED_PREF_KEY, MODE_PRIVATE);
+        String getTextFromMainActivity = sharedPreferences.getString(ImageViewHolder.SHARED_PREF_NAME_KEY, "");
+        String getImageUrlFromMainActivity = sharedPreferences.getString(ImageViewHolder.SHARED_PREF_IMAGE_KEY, "");
 
-        mainImageView = findViewById(R.id.flower_image_view);
-        mainTextView = findViewById(R.id.user_name_textview);
-        //mainTextView.setText("User Name : " + getImageFromMainActivity );
+        mainImageView = findViewById(R.id.second_activity_imageview);
+        mainTextView = findViewById(R.id.second_activity_textView);
+
+        mainTextView.setText("Captured By : " + getTextFromMainActivity);
+        Picasso.get().load(getImageUrlFromMainActivity).into(mainImageView);
+
         notifyButton = findViewById(R.id.second_activity_button);
         notifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,10 +56,8 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     private void sendNotification() {
-
         NotificationCompat.Builder notifyBuilder = getNotificationBuilder();
-        notifyManager.notify(NOTIFICATION_ID, notifyBuilder.build());
-
+        notifyManager.notify(NOTIFICATION_ID[0], notifyBuilder.build());
     }
 
     private void createNotificationChannel() {
@@ -64,16 +71,15 @@ public class SecondActivity extends AppCompatActivity {
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.RED);
             notificationChannel.enableVibration(true);
-            notificationChannel.setDescription("Go back to the Main Page");
+            notificationChannel.setDescription("Click here to Go back to the Main Page");
             notifyManager.createNotificationChannel(notificationChannel);
-
         }
-
     }
-    private NotificationCompat.Builder getNotificationBuilder(){
+
+    private NotificationCompat.Builder getNotificationBuilder() {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent notificationPendingIntent = PendingIntent.getActivity(this,
-                NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                NOTIFICATION_ID[0], notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(this, CHANNEL_1_ID)
                 .setContentTitle("You've been notified!")
                 .setContentText("Click here to go back to the Main Page")

@@ -10,11 +10,10 @@ import com.example.krishanroy.notification_app_hw_roy_krishan.R;
 import com.example.krishanroy.notification_app_hw_roy_krishan.model.Hit;
 import com.example.krishanroy.notification_app_hw_roy_krishan.view.ImageViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ImageViewAdapter extends RecyclerView.Adapter<ImageViewHolder> {
-    List<Hit> hits = new ArrayList<>();
+    List<Hit> hits;
 
 
     public ImageViewAdapter(List<Hit> hits) {
@@ -32,6 +31,7 @@ public class ImageViewAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     public void onBindViewHolder(@NonNull ImageViewHolder imageViewHolder, int i) {
         Hit hit = hits.get(i);
         imageViewHolder.onBind(hit);
+
     }
 
     @Override
