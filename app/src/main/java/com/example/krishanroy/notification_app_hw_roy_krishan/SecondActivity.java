@@ -24,11 +24,12 @@ public class SecondActivity extends AppCompatActivity {
     private ImageView mainImageView;
     private TextView mainTextView;
     private Button notifyButton;
+    private String getTextFromMainActivity;
     private SharedPreferences sharedPreferences;
     public static final String CHANNEL_1_ID = "channel1";
     private NotificationManager notifyManager;
-    private static final int[] NOTIFICATION_ID = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
-
+    private static final int NOTIFICATION_ID = 0;
+    public static final String SHARED_PREF_NOTIFY_KEY = "Notification key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class SecondActivity extends AppCompatActivity {
         setContentView(R.layout.activity_second);
         Intent intent = getIntent();
         sharedPreferences = getSharedPreferences(ImageViewHolder.SHARED_PREF_KEY, MODE_PRIVATE);
-        String getTextFromMainActivity = sharedPreferences.getString(ImageViewHolder.SHARED_PREF_NAME_KEY, "");
+        getTextFromMainActivity = sharedPreferences.getString(ImageViewHolder.SHARED_PREF_NAME_KEY, "");
         String getImageUrlFromMainActivity = sharedPreferences.getString(ImageViewHolder.SHARED_PREF_IMAGE_KEY, "");
 
         mainImageView = findViewById(R.id.second_activity_imageview);
@@ -49,7 +50,10 @@ public class SecondActivity extends AppCompatActivity {
         notifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendNotification();
+                if (!sharedPreferences.contains(SHARED_PREF_NOTIFY_KEY)) {
+                    sendNotification();
+                }
+                Toast.makeText(getApplicationContext(), "A notification was sent previously, and won't be sent again", Toast.LENGTH_LONG).show();
             }
         });
         createNotificationChannel();
@@ -57,7 +61,12 @@ public class SecondActivity extends AppCompatActivity {
 
     private void sendNotification() {
         NotificationCompat.Builder notifyBuilder = getNotificationBuilder();
-        notifyManager.notify(NOTIFICATION_ID[0], notifyBuilder.build());
+        notifyManager.notify(NOTIFICATION_ID, notifyBuilder.build());
+        sharedPreferences
+                .edit()
+                .putInt(SHARED_PREF_NOTIFY_KEY, NOTIFICATION_ID)
+                .apply();
+
     }
 
     private void createNotificationChannel() {
@@ -79,13 +88,14 @@ public class SecondActivity extends AppCompatActivity {
     private NotificationCompat.Builder getNotificationBuilder() {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent notificationPendingIntent = PendingIntent.getActivity(this,
-                NOTIFICATION_ID[0], notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(this, CHANNEL_1_ID)
-                .setContentTitle("You've been notified!")
+                .setContentTitle("Thanks for clicking on " + getTextFromMainActivity + "'s picture")
                 .setContentText("Click here to go back to the Main Page")
                 .setSmallIcon(R.drawable.ic_android)
                 .setContentIntent(notificationPendingIntent)
                 .setAutoCancel(true);
+
         return notifyBuilder;
     }
 }

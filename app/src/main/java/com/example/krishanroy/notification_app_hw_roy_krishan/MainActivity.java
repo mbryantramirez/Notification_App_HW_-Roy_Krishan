@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         Retrofit retrofit = RetrofitSingleton.getInstance();
         GetImageApi getImageApi = retrofit.create(GetImageApi.class);
-        Call<Pixabey> pixabeyCall = getImageApi.getPixabey("11260322-81f2eff70199283f574ff0e68");
+        Call<Pixabey> pixabeyCall = getImageApi.getPixabey("11260322-81f2eff70199283f574ff0e68", "water+lilies");
         Log.d(TAG, "onCreate: " + pixabeyCall.request());
         pixabeyCall.enqueue(new Callback<Pixabey>() {
             @Override
