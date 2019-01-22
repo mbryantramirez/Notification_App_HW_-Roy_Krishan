@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -48,14 +49,15 @@ public class MainActivity extends AppCompatActivity {
         pixabeyCall.enqueue(new Callback<Pixabey>() {
             @Override
             public void onResponse(Call<Pixabey> call, Response<Pixabey> response) {
-                //Command+option+V
 
                 hits = response.body().getHits();
                 Log.d(TAG, "onResponse: " + hits);
                 ImageViewAdapter imageViewAdapter = new ImageViewAdapter(hits);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+                int gridLayoutColumnCount;
+                gridLayoutColumnCount = getResources().getInteger(R.integer.grid_column_count);
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), gridLayoutColumnCount);
                 recyclerView.setAdapter(imageViewAdapter);
-                recyclerView.setLayoutManager(linearLayoutManager);
+                recyclerView.setLayoutManager(gridLayoutManager);
             }
 
             @Override
