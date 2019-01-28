@@ -19,6 +19,9 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
     private ImageView mainImageView;
     private TextView mainTextView;
     private Intent intent;
+    /**
+     * Should be private
+     */
     public SharedPreferences sharedPreferences;
     public static final String SHARED_PREF_KEY = "import com.squareup.picasso.Picasso";
     public static final String SHARED_PREF_IMAGE_KEY = "image key";
@@ -33,6 +36,9 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
 
     public void onBind(final Hit hits) {
         final String savedString = hits.getUser();
+        /**
+         * Avoid concatenating strings inside of setText
+         */
         mainTextView.setText("Captured By : " + savedString);
         Picasso.get()
                 .load(hits.getLargeImageURL())
@@ -51,6 +57,9 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View v) {
 
                 intent = new Intent(itemView.getContext(), SecondActivity.class);
+                /**
+                 * why is this commented out? you shouldnt leave comments in code you will ship you can use a different branch for comments
+                 */
                 //intent.putExtra(SHARED_PREF_NAME_KEY, savedString);
                 itemView.getContext().startActivity(intent);
             }

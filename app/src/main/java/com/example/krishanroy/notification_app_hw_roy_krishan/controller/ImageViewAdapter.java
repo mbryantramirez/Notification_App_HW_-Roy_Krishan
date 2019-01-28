@@ -13,6 +13,10 @@ import com.example.krishanroy.notification_app_hw_roy_krishan.view.ImageViewHold
 import java.util.List;
 
 public class ImageViewAdapter extends RecyclerView.Adapter<ImageViewHolder> {
+
+    /**
+     * should be set to private
+     */
     List<Hit> hits;
 
 

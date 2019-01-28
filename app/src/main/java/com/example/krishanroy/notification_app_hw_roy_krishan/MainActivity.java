@@ -25,11 +25,21 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
+
+    /**
+     * does this need to be public
+     */
     public List<Hit> hits;
+    /**
+     * should be made private
+     */
     RecyclerView recyclerView;
     private static final String TAG = "onResponse";
     public SharedPreferences sharedPreferences;
     public static final String SHARED_PREF_KEY = "import com.squareup.picasso.Picasso";
+    /**
+     *  you should remove any unused field variables especially if theyre public
+     */
     public static final String SHARED_PREF_IMAGE_KEY = "image key";
     public static final String SHARED_PREF_USER_NAME_KEY = "user name key";
 
@@ -40,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.image_recyclerview);
+        /**
+         * this shared prefrences is never used
+         */
         sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREF_KEY, MODE_PRIVATE);
 
         Retrofit retrofit = RetrofitSingleton.getInstance();
@@ -49,10 +62,17 @@ public class MainActivity extends AppCompatActivity {
         pixabeyCall.enqueue(new Callback<Pixabey>() {
             @Override
             public void onResponse(Call<Pixabey> call, Response<Pixabey> response) {
-
+                /**
+                 * Dont ingore the linter, Account for the possibility that this response can be null otherwise your
+                 * app might crash
+                 */
                 hits = response.body().getHits();
                 Log.d(TAG, "onResponse: " + hits);
                 ImageViewAdapter imageViewAdapter = new ImageViewAdapter(hits);
+                /**
+                 * Cool I like that you thought about extracting variables into resources
+                 * but this isnt really necessary here thats more for text than for gridlayoutcolumn count
+                 */
                 int gridLayoutColumnCount;
                 gridLayoutColumnCount = getResources().getInteger(R.integer.grid_column_count);
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), gridLayoutColumnCount);
@@ -62,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Pixabey> call, Throwable t) {
+                /**
+                 * Great!! logging failure is important
+                 */
                 Log.d(TAG, "onFailure: " + t.toString());
 
             }

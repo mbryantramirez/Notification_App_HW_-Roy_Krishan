@@ -29,13 +29,20 @@ public class SecondActivity extends AppCompatActivity {
     public static final String CHANNEL_1_ID = "channel1";
     private NotificationManager notifyManager;
     private static final int NOTIFICATION_ID = 0;
-    public static final String SHARED_PREF_NOTIFY_KEY = "Notification key";
+    /**
+     * remove unused variables
+     */
+    public static final String
+        SHARED_PREF_NOTIFY_KEY = "Notification key";
     private String notificationTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
+        /**
+         * This intent is never used
+         */
         Intent intent = getIntent();
         sharedPreferences = getSharedPreferences(ImageViewHolder.SHARED_PREF_KEY, MODE_PRIVATE);
         getTextFromMainActivity = sharedPreferences.getString(ImageViewHolder.SHARED_PREF_NAME_KEY, "");
@@ -43,7 +50,9 @@ public class SecondActivity extends AppCompatActivity {
         notificationTitle = "Thanks for clicking " + getTextFromMainActivity + "'s picture";
         mainImageView = findViewById(R.id.second_activity_imageview);
         mainTextView = findViewById(R.id.second_activity_textView);
-
+        /**
+         * Avoid concatenating when setting text in a textview
+         */
         mainTextView.setText("Captured By : " + getTextFromMainActivity);
         Picasso.get().load(getImageUrlFromMainActivity).into(mainImageView);
 
@@ -51,6 +60,9 @@ public class SecondActivity extends AppCompatActivity {
         notifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /**
+                 *  This should be checking if true send a notification else send a toast right now youre doing both
+                 */
                 if (notificationAlreadySent(notificationTitle)) {
                     sendNotification();
                 }
@@ -63,7 +75,6 @@ public class SecondActivity extends AppCompatActivity {
     private void sendNotification() {
         NotificationCompat.Builder notifyBuilder = getNotificationBuilder();
         notifyManager.notify(NOTIFICATION_ID, notifyBuilder.build());
-
     }
 
     private boolean notificationAlreadySent(String message) {
@@ -96,6 +107,10 @@ public class SecondActivity extends AppCompatActivity {
                 .setSmallIcon(R.drawable.ic_android)
                 .setContentIntent(notificationPendingIntent)
                 .setAutoCancel(true);
+        /**
+         * both your default value and the value your putting here for the notificationTitle key in shared prefrences are false
+         * The logic would work if your default was false and was set to true when the notification was built here
+         */
         sharedPreferences.edit()
                 .putBoolean(notificationTitle, false)
                 .apply();
